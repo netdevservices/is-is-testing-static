@@ -8,6 +8,7 @@ ZEBRA="/usr/local/sbin/zebra"
 update_agent = <<EOS
 if ! [ -e "/usr/share/bcc/tools" ]
     then
+        set -e
         echo "deb [trusted=yes] https://repo.iovisor.org/apt/xenial xenial-nightly main" | sudo tee /etc/apt/sources.list.d/iovisor.list
         apt -y update
         sudo apt-get -y install --force-yes build-essential git python tree bcc-tools python-pip
@@ -22,7 +23,7 @@ EOS
 update_packages = <<EOS
 if ! [ -e "/usr/local/sbin/zebra" ]
     then
-        set -x
+        set -e
         apt -y update
         apt install -y --force-yes libreadline-dev pkg-config libc-ares-dev
         wget http://download.savannah.gnu.org/releases/quagga/quagga-1.2.1.tar.gz
@@ -48,7 +49,6 @@ sudo mv /home/ubuntu/zebra.conf /usr/local/etc/zebra.conf
 EOS
 
 setup_vnf_bridge = <<EOS
-set -x 
 ip link add dev br1 type bridge || true
 ip link set br1 up || true
 ip link set enp0s9 master br1 || true
@@ -62,28 +62,24 @@ tc filter add dev br1 parent ffff: protocol all u32 match ether src 01:80:c2:00:
 EOS
 
 setup_gre_1_2 = <<EOS
-set -x 
 sudo ip link add tunnel1 type gretap local 192.168.100.200 remote 192.168.100.201
 sudo ip link set tunnel1 master br1
 sudo ip link set tunnel1 up
 EOS
 
 setup_gre_1_3 = <<EOS
-set -x 
 sudo ip link add tunnel2 type gretap local 192.168.100.200 remote 192.168.100.202
 sudo ip link set tunnel2 master br1
 sudo ip link set tunnel2 up
 EOS
 
 setup_gre_2_1 = <<EOS
-set -x 
 sudo ip link add tunnel1 type gretap local 192.168.100.201 remote 192.168.100.200
 sudo ip link set tunnel1 up
 EOS
 
 
 setup_gre_3_1 = <<EOS
-set -x 
 sudo ip link add tunnel1 type gretap local 192.168.100.202 remote 192.168.100.200
 sudo ip link set tunnel1 up
 EOS
