@@ -164,15 +164,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
 
-    config.vm.define "agent" do |agent|
-    agent.vm.box = "ubuntu/zesty64"
-    agent.vm.hostname = "agent"
-    agent.vm.network "private_network", ip: "192.168.200.201"
-    agent.vm.provider "virtualbox" do |vb|
-      vb.name = "agent"
-      vb.memory = 1440
-    end
-    agent.vm.provision :shell, :inline => update_agent
-  end
+   # config.vm.define "agent" do |agent|
+   # agent.vm.box = "ubuntu/zesty64"
+   # agent.vm.hostname = "agent"
+   # agent.vm.network "private_network", ip: "192.168.200.201"
+   # agent.vm.provider "virtualbox" do |vb|
+   #   vb.name = "agent"
+   #   vb.memory = 1440
+   # end
+   # agent.vm.provision :shell, :inline => update_agent
+   # end
 
 end
